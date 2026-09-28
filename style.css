@@ -1,0 +1,100 @@
+*{box-sizing:border-box}
+html,body{margin:0;background:#fff;color:#000;font-family:Arial,Helvetica,sans-serif}
+body{overflow:hidden}
+#game{
+  position:relative;width:480px;height:730px;margin:20px auto 0;
+  background:#fff;border:1px solid #000;overflow:hidden
+}
+#lanes{position:absolute;inset:0;display:grid;grid-template-columns:repeat(6,1fr)}
+.lane{position:relative;border-right:1px solid #000}
+.lane:last-child{border-right:0}
+
+/* 判定ラインと下の判定領域 */
+#judgeLine{position:absolute;left:0;right:0;bottom:28px;height:1px;background:#000;z-index:10}
+.lane::after{
+  content:"";position:absolute;left:0;right:0;bottom:0;height:28px;
+  border-top:1px solid #000;pointer-events:none
+}
+
+/* 通常TAP：画像のピンク長方形 */
+.note{
+  position:absolute;z-index:5;transform:translateY(-50%);
+  pointer-events:none
+}
+.note-rect{
+  left:6px;width:68px;height:30px;
+  border:4px solid #000;background:#ff8f98
+}
+.note-rect.sim{background:#ffe69d}
+
+/* HOLD：頭と終端の2つの長方形＋黒の点線 */
+.note-hold{
+  left:6px;width:68px;height:30px;
+  border:4px solid #000;background:#ff8f98;
+  overflow:visible
+}
+.note-hold.sim{background:#ffe69d}
+.hold-head,.hold-tail{
+  position:absolute;left:0;width:100%;height:30px;
+  border:4px solid #000;background:inherit
+}
+.hold-head{top:-15px}
+.hold-tail{bottom:-15px}
+
+/* 画像左側のような黒い点線 */
+.hold-dotted-line{
+  position:absolute;left:50%;top:15px;bottom:15px;
+  transform:translateX(-50%);
+  border-left:4px dotted #000;
+}
+
+/* FLICK：紫の↑↓ */
+.note-flick{
+  left:50%;width:48px;height:54px;
+  transform:translate(-50%,-50%)
+}
+.flick-svg{position:absolute;inset:0;width:48px;height:54px;overflow:visible}
+.flick-svg line{
+  stroke:#ed78eb;stroke-width:8;stroke-linecap:square
+}
+.flick-svg polygon{fill:#ed78eb}
+
+/* 同時押しFLICKも黄色 */
+.note-flick.sim line{stroke:#ffe69d}
+.note-flick.sim polygon{fill:#ffe69d}
+
+.note.hit{opacity:0}
+
+/* 開始 */
+#start{
+  position:absolute;inset:0;z-index:30;
+  display:grid;place-items:center;
+  background:rgba(255,255,255,.90)
+}
+.start-title{font-size:42px;font-weight:900;text-align:center;margin-bottom:14px}
+#start button{
+  display:block;margin:auto;border:4px solid #000;background:#ff8f98;
+  color:#000;font-size:22px;font-weight:900;padding:12px 42px;cursor:pointer
+}
+
+/* リザルト */
+#result{
+  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  display:none;z-index:25;text-align:center;
+  background:rgba(255,255,255,.92);padding:16px 22px
+}
+#resultTitle{font-size:28px;font-weight:900}
+#resultDetail{margin-top:8px;font-size:13px;line-height:1.6}
+
+#hud{
+  width:480px;margin:7px auto 0;
+  display:flex;justify-content:space-between;
+  font-size:12px;font-weight:700
+}
+
+@media(max-width:520px){
+  body{overflow:auto}
+  #game,#hud{width:calc(100vw - 8px)}
+  #game{height:calc(100vh - 54px);margin-top:4px}
+  .note-rect,.note-hold{width:calc(100% / 6 - 12px)}
+}
